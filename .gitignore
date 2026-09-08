@@ -43,3 +43,5 @@ velops_dbt.duckdb
 
 # Fichier utilisateur dbt
 dbt/.user.yml
+
+.pytest_cache/
