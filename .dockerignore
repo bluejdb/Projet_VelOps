@@ -1,0 +1,14 @@
+.venv
+__pycache__
+*.pyc
+.git
+.gitignore
+airflow
+dbt
+spark
+tests
+docs
+bloc_2
+bloc_3
+*.log
+.pytest_cache
