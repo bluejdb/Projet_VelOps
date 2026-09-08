@@ -8,3 +8,4 @@ uvicorn
 pyspark
 pytest
 httpx2
+prometheus-client

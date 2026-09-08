@@ -1,0 +1,53 @@
+groups:
+  - name: velops_alerts
+    rules:
+
+      - alert: VelOpsAPIDown
+        expr: up{job="velops-api"} == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "API VelOps indisponible"
+          description: "Prometheus ne parvient plus à joindre l'API VelOps."
+
+      - alert: VelOpsHighLatency
+        expr: |
+          histogram_quantile(
+            0.99,
+            sum(
+              rate(
+                velops_api_request_duration_seconds_bucket[5m]
+              )
+            ) by (le)
+          ) > 0.1
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Latence élevée sur l'API VelOps"
+          description: "La latence P99 dépasse 100 ms depuis au moins une minute."
+
+      - alert: VelOpsHighErrorRate
+        expr: |
+          (
+            sum(
+              rate(
+                velops_api_requests_total{
+                  status_code=~"5.."
+                }[5m]
+              )
+            )
+            /
+            sum(
+              rate(
+                velops_api_requests_total[5m]
+              )
+            )
+          ) * 100 > 5
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Taux d'erreur élevé sur l'API VelOps"
+          description: "Plus de 5 % des requêtes API retournent une erreur HTTP 5xx."

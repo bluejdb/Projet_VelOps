@@ -5,6 +5,9 @@ import pickle
 import pandas as pd
 
 from fastapi import FastAPI, HTTPException
+from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
+from fastapi.responses import Response
+import time
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -16,7 +19,45 @@ app = FastAPI(
     description="API de consultation des données VelOps Paris",
     version="1.0.0",
 )
+REQUEST_COUNT = Counter(
+    "velops_api_requests_total",
+    "Nombre total de requetes HTTP",
+    ["method", "endpoint", "status_code"],
+)
 
+REQUEST_LATENCY = Histogram(
+    "velops_api_request_duration_seconds",
+    "Temps de traitement des requetes HTTP",
+    ["method", "endpoint"],
+)
+
+@app.middleware("http")
+async def prometheus_middleware(request, call_next):
+    start_time = time.perf_counter()
+
+    response = await call_next(request)
+
+    duration = time.perf_counter() - start_time
+
+    REQUEST_COUNT.labels(
+        method=request.method,
+        endpoint=request.url.path,
+        status_code=response.status_code,
+    ).inc()
+
+    REQUEST_LATENCY.labels(
+        method=request.method,
+        endpoint=request.url.path,
+    ).observe(duration)
+
+    return response
+
+@app.get("/metrics")
+def metrics():
+    return Response(
+        content=generate_latest(),
+        media_type=CONTENT_TYPE_LATEST,
+    )
 
 @app.get("/")
 def root():
