@@ -69,7 +69,16 @@ def main():
         )
 
         print(f"[2/4] Arrondissements chargés : {len(arrondissements)}")
-
+        target_conn.execute(
+            """
+            UPDATE dim_arrondissement
+            SET nom_arrondissement = REPLACE(
+                nom_arrondissement,
+                char(160),
+                ' '
+            )
+            """
+        )
         # ============================================================
         # DIMENSION STATION
         # ============================================================
