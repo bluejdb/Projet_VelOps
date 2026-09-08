@@ -28,3 +28,6 @@ Thumbs.db
 # Livrables bureautiques / anciens rapports
 *.docx
 *.pdf
+
+# Sorties générées par Spark
+spark/output/
