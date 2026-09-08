@@ -42,13 +42,10 @@ def load_source_data():
 def main():
     print("=== VELOPS - TRAITEMENT SPARK ===")
 
-    python_executable = str(
-        PROJECT_ROOT / ".venv" / "Scripts" / "python.exe"
-    )
+    python_executable = sys.executable
 
     os.environ["PYSPARK_PYTHON"] = python_executable
     os.environ["PYSPARK_DRIVER_PYTHON"] = python_executable
-
     print(f"[CONFIG] Python Spark : {python_executable}")
 
     spark = (

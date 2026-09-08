@@ -31,3 +31,7 @@ Thumbs.db
 
 # Sorties générées par Spark
 spark/output/
+
+# Fichiers générés par Airflow
+airflow/logs/
+airflow/config/airflow.cfg
