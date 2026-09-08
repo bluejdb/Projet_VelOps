@@ -40,3 +40,6 @@ airflow/config/airflow.cfg
 dbt/target/
 dbt/logs/
 velops_dbt.duckdb
+
+# Fichier utilisateur dbt
+dbt/.user.yml
