@@ -1,0 +1,38 @@
+version: 2
+
+models:
+
+  - name: stg_disponibilite
+    description: "Vue de staging des observations de disponibilité VelOps."
+    columns:
+      - name: station_id
+        tests:
+          - not_null
+
+      - name: velos_disponibles
+        tests:
+          - not_null
+
+      - name: places_libres
+        tests:
+          - not_null
+
+      - name: taux_disponibilite
+        tests:
+          - not_null
+
+  - name: mart_disponibilite_arrondissement
+    description: "Table Gold agrégée par arrondissement."
+    columns:
+      - name: arrondissement_id
+        tests:
+          - not_null
+          - unique
+
+      - name: nombre_observations
+        tests:
+          - not_null
+
+      - name: moyenne_velos
+        tests:
+          - not_null

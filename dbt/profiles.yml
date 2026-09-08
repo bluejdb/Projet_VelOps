@@ -1,0 +1,8 @@
+velops:
+  target: dev
+
+  outputs:
+    dev:
+      type: duckdb
+      path: "../velops_dbt.duckdb"
+      threads: 4

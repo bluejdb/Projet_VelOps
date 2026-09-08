@@ -35,3 +35,8 @@ spark/output/
 # Fichiers générés par Airflow
 airflow/logs/
 airflow/config/airflow.cfg
+
+# Fichiers générés par dbt / DuckDB
+dbt/target/
+dbt/logs/
+velops_dbt.duckdb
