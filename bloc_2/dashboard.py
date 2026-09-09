@@ -79,7 +79,16 @@ else:
         
         # Récupération de la station pour trouver ses caractéristiques par défaut
         st_data = df_stations[df_stations['nom'] == station_selectionnee].iloc[0]
-        station_id_encoded = hash(st_data['id']) % 100  # Encodage cohérent ou récupération de l'index
+        station_categories = df_stations['id'].astype('category')
+
+        station_code_map = dict(
+           zip(
+               df_stations['id'],
+               station_categories.cat.codes
+          )
+        )
+
+        station_id_encoded = station_code_map[st_data['id']]
         places_libres_actuelles = st_data['places_libres']
         
         # Bouton de prédiction
